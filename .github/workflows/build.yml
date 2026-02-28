@@ -1,4 +1,4 @@
-name: Build OpenFang (musl static)
+name: Build OpenFang (GNU static)
 
 on:
   workflow_dispatch:
@@ -9,20 +9,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Use Ubuntu 22.04 with GLIBC 2.35 (compatible with Debian 12)
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-unknown-linux-musl
-
-      - name: Install musl
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y musl-tools
 
       - name: Cache
         uses: actions/cache@v4
@@ -34,11 +27,11 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Build
-        run: cargo build --release --target x86_64-unknown-linux-musl --bin openfang
+        run: cargo build --release --bin openfang
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: openfang-musl
-          path: target/x86_64-unknown-linux-musl/release/openfang
+          name: openfang-gnu
+          path: target/release/openfang
           retention-days: 7
