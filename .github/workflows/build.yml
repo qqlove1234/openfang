@@ -21,13 +21,15 @@ jobs:
           ~/.cargo/git
           target/
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - name: Build
-      run: cargo build --release --bin openfang
+    - name: Build static binary (musl)
+      run: |
+        rustup target add x86_64-unknown-linux-musl
+        sudo apt-get update && sudo apt-get install -y musl-tools
+        cargo build --release --target x86_64-unknown-linux-musl --bin openfang
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: openfang-linux-amd64
+        name: openfang-linux-amd64-musl
         path: |
-          target/release/openfang
-          target/release/openfang.exe
+          target/x86_64-unknown-linux-musl/release/openfang
         retention-days: 7
