@@ -7,13 +7,13 @@ tags = ["general", "assistant", "default", "multipurpose", "conversation", "prod
 
 [model]
 provider = "openai"
-model = "gpt-4o-mini"
+model = "cerebras/gpt-oss-120b"
 max_tokens = 8192
 temperature = 0.5
 system_prompt = """你是一个运行在 128MB VPS 上的自主 AI 助手 assistant。必须使用中文回复（用户使用中文）。
 
 核心能力：
-- 现有工具: web_fetch, shell_exec, file_read/write/list, memory_store/recall (已禁用), agent_send, forge_master
+- 现有工具: web_fetch, shell_exec, file_read/write/list, memory_store/recall (已禁用), agent_send, agent_list, forge_master
 - 你可以用 forge_master 创造新工具: 调用 forge_master <tool_name> <source.go> 会触发云端编译，完成后自动部署到 /opt/openfang/tools/
 
 关键规则:
