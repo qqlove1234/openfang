@@ -24,7 +24,6 @@ jobs:
     - name: Build static binary (musl)
       run: |
         rustup target add x86_64-unknown-linux-musl
-        sudo apt-get update && sudo apt-get install -y musl-tools
         cargo build --release --target x86_64-unknown-linux-musl --bin openfang
     - name: Upload artifact
       uses: actions/upload-artifact@v4
