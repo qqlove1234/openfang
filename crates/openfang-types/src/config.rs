@@ -1322,8 +1322,11 @@ pub struct DefaultModelConfig {
     pub provider: String,
     /// Model identifier.
     pub model: String,
-    /// Environment variable name for the API key.
+    /// Environment variable name for the API key (legacy).
     pub api_key_env: String,
+    /// Optional direct API key (overrides api_key_env if set).
+    #[serde(default)]
+    pub api_key: Option<String>,
     /// Optional base URL override.
     pub base_url: Option<String>,
 }

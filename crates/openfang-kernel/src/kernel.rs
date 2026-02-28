@@ -527,7 +527,11 @@ impl OpenFangKernel {
         // Create LLM driver
         let driver_config = DriverConfig {
             provider: config.default_model.provider.clone(),
-            api_key: std::env::var(&config.default_model.api_key_env).ok(),
+            api_key: config
+                .default_model
+                .api_key
+                .clone()
+                .or_else(|| std::env::var(&config.default_model.api_key_env).ok()),
             base_url: config.default_model.base_url.clone(),
         };
         let primary_driver = drivers::create_driver(&driver_config)
