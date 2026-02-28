@@ -278,8 +278,20 @@ pub fn split_message(text: &str, max_len: usize) -> Vec<&str> {
             chunks.push(remaining);
             break;
         }
-        // Try to split at a newline near the boundary
-        let split_at = remaining[..max_len].rfind('\n').unwrap_or(max_len);
+        // Find split point that respects UTF-8 boundaries
+        let mut split_at = max_len;
+        if !remaining.is_char_boundary(split_at) {
+            // Back up to nearest previous char boundary
+            split_at = remaining[..split_at]
+                .char_indices()
+                .next_back()
+                .map(|(i, _)| i)
+                .unwrap_or(remaining.len());
+        }
+        // Prefer splitting at newline
+        let split_at = remaining[..split_at]
+            .rfind('\n')
+            .unwrap_or(split_at);
         let (chunk, rest) = remaining.split_at(split_at);
         chunks.push(chunk);
         // Skip the newline (and optional \r) we split on
