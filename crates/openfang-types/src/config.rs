@@ -1337,6 +1337,7 @@ impl Default for DefaultModelConfig {
             provider: "anthropic".to_string(),
             model: "claude-sonnet-4-20250514".to_string(),
             api_key_env: "ANTHROPIC_API_KEY".to_string(),
+            api_key: None,
             base_url: None,
         }
     }
