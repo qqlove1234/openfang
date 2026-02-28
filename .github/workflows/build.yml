@@ -19,6 +19,11 @@ jobs:
         with:
           targets: x86_64-unknown-linux-musl
 
+      - name: Install musl
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y musl-tools
+
       - name: Cache
         uses: actions/cache@v4
         with:
