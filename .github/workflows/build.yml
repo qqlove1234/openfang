@@ -1,4 +1,4 @@
-name: Build OpenFang
+name: Build OpenFang (cross)
 
 on:
   workflow_dispatch:
@@ -18,12 +18,15 @@ jobs:
       - name: Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Build
-        run: cargo build --release --bin openfang
+      - name: Install cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Build with cross (static)
+        run: cross build --release --target x86_64-unknown-linux-musl --bin openfang
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: openfang-linux-amd64
-          path: target/release/openfang
+          name: openfang-musl
+          path: target/x86_64-unknown-linux-musl/release/openfang
           retention-days: 7
