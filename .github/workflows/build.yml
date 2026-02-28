@@ -1,15 +1,13 @@
-name: Build OpenFang (GNU static)
+name: Build OpenFang
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # Use Ubuntu 22.04 with GLIBC 2.35 (compatible with Debian 12)
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,13 +16,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        uses: Swatinem/rust-cache@v2
 
       - name: Build
         run: cargo build --release --bin openfang
@@ -32,6 +24,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: openfang-gnu
+          name: openfang-linux-amd64
           path: target/release/openfang
           retention-days: 7
